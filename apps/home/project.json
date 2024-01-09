@@ -1,0 +1,76 @@
+{
+  "name": "home",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/home/src",
+  "targets": {
+    "build": {
+      "executor": "@angular-builders/custom-webpack:browser",
+      "options": {
+        "customWebpackConfig": {
+          "libraryTarget": "system",
+          "excludeAngularDependencies": true,
+          "path": "apps/home/webpack.config.ts"
+        },
+        "outputPath": "dist/apps/home",
+        "index": "apps/home/src/index.html",
+        "main": "apps/home/src/main.single-spa.ts",
+        "tsConfig": "apps/home/tsconfig.app.json",
+        "aot": true,
+        "assets": ["apps/home/src/favicon.ico", "apps/home/src/assets"],
+        "styles": ["apps/home/src/styles.scss"],
+        "deployUrl": "http://localhost:4500/"
+      },
+      "configurations": {
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/home/src/environments/environment.ts",
+              "with": "apps/home/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "none",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "buildOptimizer": true,
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "2mb",
+              "maximumError": "5mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "6kb",
+              "maximumError": "10kb"
+            }
+          ]
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-builders/custom-webpack:dev-server",
+      "options": {
+        "browserTarget": "home:build:development"
+      },
+      "configurations": {
+        "production": {
+          "browserTarget": "home:build:production"
+        }
+      }
+    }
+  },
+  "tags": []
+}

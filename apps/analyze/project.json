@@ -1,0 +1,76 @@
+{
+  "name": "analyze",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/analyze/src",
+  "targets": {
+    "build": {
+      "executor": "@angular-builders/custom-webpack:browser",
+      "options": {
+        "customWebpackConfig": {
+          "libraryTarget": "system",
+          "excludeAngularDependencies": true,
+          "path": "apps/analyze/webpack.config.ts"
+        },
+        "outputPath": "dist/apps/analyze",
+        "index": "apps/analyze/src/index.html",
+        "main": "apps/analyze/src/main.single-spa.ts",
+        "tsConfig": "apps/analyze/tsconfig.app.json",
+        "aot": true,
+        "assets": ["apps/analyze/src/favicon.ico", "apps/analyze/src/assets"],
+        "styles": ["apps/analyze/src/styles.scss"],
+        "deployUrl": "http://localhost:4501/"
+      },
+      "configurations": {
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/analyze/src/environments/environment.ts",
+              "with": "apps/analyze/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "none",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "buildOptimizer": true,
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "2mb",
+              "maximumError": "5mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "6kb",
+              "maximumError": "10kb"
+            }
+          ]
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-builders/custom-webpack:dev-server",
+      "options": {
+        "browserTarget": "analyze:build:development"
+      },
+      "configurations": {
+        "production": {
+          "browserTarget": "analyze:build:production"
+        }
+      }
+    }
+  },
+  "tags": []
+}
